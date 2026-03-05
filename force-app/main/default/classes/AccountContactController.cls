@@ -5,5 +5,11 @@ public with sharing class AccountContactController {
         List<Account> acc = [SELECT Name, Phone, Industry FROM Account LIMIT: limitSize OFFSET :offSet];
         return acc;
     }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Contact> getContacts(Integer limitSize, Integer offSet, Id accountId){
+        List<Contact> con = [SELECT Name, Account.Name, Phone, Email FROM Contact WHERE AccountId = :accountId LIMIT: limitSize OFFSET :offSet];
+        return con;
+    }
     
 }
