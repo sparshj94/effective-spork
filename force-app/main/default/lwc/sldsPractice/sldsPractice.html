@@ -1,0 +1,81 @@
+<template>
+    
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+        <span class="slds-icon_container slds-icon-standard-account" title="account">
+        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+        <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+        </svg>
+        <span class="slds-assistive-text">account</span>
+        </span>
+        </div>
+        <div class="slds-media__body">
+        <h2 class="slds-card__header-title">
+        <a href="#" class="slds-card__header-link slds-truncate" title="Accounts">
+        <span>Accounts</span>
+        </a>
+        </h2>
+        </div>
+        </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <lightning-button variant="brand" data-object = "Account" label="Account" title="Primary action" onclick={handleObjSelection} class="slds-m-left_x-small" aria-haspopup="dialog"></lightning-button>
+            <lightning-button variant="brand" data-object = "Contact" label="Contact" title="Primary action" onclick={handleObjSelection} class="slds-m-left_x-small" aria-haspopup="dialog"></lightning-button>
+            <lightning-button variant="brand" data-object = "Lead" label="Lead" title="Primary action" onclick={handleObjSelection} class="slds-m-left_x-small" aria-haspopup="dialog"></lightning-button>
+        </div>
+    </article>
+
+
+    
+    
+    <template if:true={isBtnClicked}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <button class="slds-button slds-button_icon slds-modal__close" onclick={handleCancelBtn}>
+                <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                </svg>
+                <span class="slds-assistive-text">Cancel and close</span>
+            </button>
+            <div class="slds-modal__header">
+                <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">Modal header</h1>
+            </div>
+            <div class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={handleCancelBtn}>Cancel</button>
+                <button class="slds-button slds-button_brand" onclick={handleProceedBtn}>Proceed</button>
+            </div>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <template if:true={isProceedClicked}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCancelBtn}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">Create Record for {selectedObjApiName}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-record-form
+                        object-api-name={selectedObjApiName}
+                        layout-type="Full"
+                        columns="2"
+                        oncancel={handleCancelBtn}
+                        onsuccess={handleSuccess}>
+                    </lightning-record-form>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    
+    </template>
+
+
+    
+
+</template>

@@ -1,0 +1,12 @@
+<template>
+
+    <!-- <template for:each={getAccFromApex.data} for:item="item">
+        <p key={item}>{item.Name}</p>
+    </template> -->
+    <lightning-input type="text" label="Enter some text" class = "getname"></lightning-input>
+    <lightning-button label="Get Account" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+    <template for:each={getAccFromApex} for:item="item">
+        <p key={item}>{item.Name}</p>
+    </template>
+    
+</template>

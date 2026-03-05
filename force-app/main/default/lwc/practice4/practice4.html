@@ -1,0 +1,57 @@
+<template>
+    <lightning-card title="ComboBox Example">
+        <div class="slds-p-around_medium">
+        <lightning-combobox name="Category" label="Category" value={selectedCat} options={categoryOptions}
+            onchange={handleCategoryChange}></lightning-combobox>
+        </div>
+        <div class="slds-p-around_medium">
+        <lightning-combobox name="price" label="Sort by Price" value={selectedPrice} options={priceOption}
+            onchange={handlePriceChange}></lightning-combobox>
+        </div>
+        <div class="slds-p-around_medium">
+        <lightning-combobox name="rating" label="Sort by Rating" value={selectedRating} options={ratingOption}
+            onchange={handleRatingChange}></lightning-combobox>
+        </div>
+        <lightning-button variant="brand" label="Apply Filter" title="Apply Filter" onclick={applyFilter} class="slds-m-left_x-small" aria-haspopup="dialog"></lightning-button>
+    </lightning-card>
+
+    <h2>Explore Products</h2>
+
+    <template for:each={filteredProducts} for:item="product">
+        <lightning-card key={product.id}>
+            <p>{product.name}</p>
+            <img src={product.image} alt={product.image} width="150">
+            <!-- <p>{product.image}</p> -->
+            <p>{product.description}</p>
+            <p>{product.price}</p>
+            <p>{product.stockStatus}</p>
+            <p>{product.rating}</p>
+            <lightning-button variant="brand" label="View Detail" title="View Detail" onclick={viewDeatil} class="slds-m-left_x-small" aria-haspopup="dialog"></lightning-button>
+            
+            <template if:true={isDetailToOpen}>
+                <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <h1 class="slds-modal__title slds-hyphenate" tabindex="-1">{product.name}</h1>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p>Description: {product.description}</p>
+                        <p>Price: {product.price}</p>
+                        <p>Stock: {product.stockStatus}</p>
+                        <p>Rating: {product.rating}</p>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={handleCancelBtn}>Cancel</button>
+                    </div>
+                </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+            </template>
+            
+        </lightning-card>
+        
+    </template>
+
+    
+
+</template>
