@@ -32,8 +32,13 @@ export default class OpportunityDataTable extends LightningElement {
                 if (result.length > 0) {
                     // Append new data
                     let updatedData = [...this.data, ...result];
-                    this.filteredData = updatedData;
                     this.data = updatedData;
+                    if(this.searchedKey){
+                        this.applySearch();
+                    }
+                    else{
+                        this.filteredData = updatedData;
+                    }
                 }
                 
                 // If returned records less than limit, no more data to load
@@ -60,23 +65,32 @@ export default class OpportunityDataTable extends LightningElement {
     }
     handleSearch(event){
         console.log("Handle search");
-        let str = this.template.querySelector('lightning-input').value;
-        
+        let str = this.template.querySelector('lightning-input').value.toLowerCase();
         this.searchedKey = str
-        console.log("Seark ley",this.searchedKey);
-        this.isLoadingg = true;
+        if(this.searchedKey){
+            this.enableInfiniteLoading = false;
+        } else{
+            this.enableInfiniteLoading = true;
+        }
+        this.applySearch();
+    }
+    applySearch(){
         if(this.searchedKey){
             this.filteredData = this.data.filter(row => 
                 (row.Name && row.Name.toLowerCase().includes(this.searchedKey)) || 
-                (row.StageName && row.StageName.toLowerCase.includes(this.searchedKey))
+                (row.StageName && row.StageName.toLowerCase().includes(this.searchedKey))
             );
-            console.log("After filter");
-            
+
+            console.log("apply After filter");
             console.log(this.filteredData);
             
         } else{
             this.filteredData = [...this.data];
+            this.enableInfiniteLoading = true;
+            console.log("else filter data",this.filteredData);
+            
         }
-        this.isLoadingg = false;
+        this.isLoading = false;
+        console.log("apply search end");
     }
 }

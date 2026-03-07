@@ -1,0 +1,16 @@
+<template>
+    <lightning-card  title="Order Placement Component">
+            <lightning-input label="Customer name" placeholder="Enter Customer name" required class="customerName"></lightning-input>
+            <lightning-combobox
+                name="progress"
+                label="Select Item"
+                value=""
+                placeholder="Select an Option"
+                options={options}
+                onchange={handleChange}
+                required
+            ></lightning-combobox>
+            <lightning-input type="number" label="Order Quantity" placeholder="Enter Order Quantity" required class="quantity"></lightning-input>
+            <lightning-button label="Place Order" slot="actions" onclick={handleOrder}></lightning-button>
+    </lightning-card>
+</template>

@@ -66,7 +66,7 @@ export default class ContactDataTable extends LightningElement {
     loadMoreData(event){
         const currentRecords = this.contacts;
         const {target} = event;
-        target.isLoading = true;
+        // target.isLoading = true;
         this.rowOffSet = this.rowOffSet+this.rowLimit;
         this.loadData().then(()=>{target.isLoading = false;})
         console.log("Load more data");
