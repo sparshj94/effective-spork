@@ -1,5 +1,5 @@
 import { LightningElement, wire } from 'lwc';
-import ORDER_CHANNEL from '@salesforce/messageChannel/OrderCommunication__c';
+import COMPONENT_COMMUNICATION from '@salesforce/messageChannel/ComponentCommunication__c';
 import {MessageContext, subscribe} from 'lightning/messageService'
 export default class OrderStatus extends LightningElement {
 
@@ -10,10 +10,11 @@ export default class OrderStatus extends LightningElement {
     quantity;
     item='';
     status='';
+    isOrder = false;
 
     connectedCallback() {
         if(!this.subscription){
-            this.subscription = subscribe(this.messageContext, ORDER_CHANNEL,
+            this.subscription = subscribe(this.messageContext, COMPONENT_COMMUNICATION,
                 (result) => {
                     console.log(result);
                     this.orderId = result.orderId;
@@ -21,9 +22,11 @@ export default class OrderStatus extends LightningElement {
                     this.quantity =result.quantity;
                     this.item=result.item;
                     this.status = result.status;
+                    this.isOrder = true;
                 }
             );
         }
+
     }
 
 }

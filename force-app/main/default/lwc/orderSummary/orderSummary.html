@@ -1,0 +1,13 @@
+<template>
+
+    <lightning-card title="Order Summary">
+        <p>Total Orders: {totalOrders}</p>
+
+        <lightning-datatable key-field="Id"
+            data={orders}
+            columns={columns}
+            hide-checkbox-column="true">
+        </lightning-datatable> 
+    </lightning-card>
+
+</template>

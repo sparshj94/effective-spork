@@ -1,0 +1,35 @@
+<template>
+        <lightning-modal-header label={heading}>
+            <p>View your contact information.</p>
+        </lightning-modal-header>
+            <lightning-modal-body>
+                <div class="slds-form" role="list">
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning-input
+                                    type="text"
+                                    name="Name"
+                                    label="Name"
+                                    value={contactName}
+                                    required
+                                    readonly
+                                ></lightning-input>
+                            </div>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning-input
+                                    readonly
+                                    type="text"
+                                    value={contactPhone}
+                                    name="phone"
+                                    label="Phone"
+                                    
+                                ></lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </lightning-modal-body>
+    </template>

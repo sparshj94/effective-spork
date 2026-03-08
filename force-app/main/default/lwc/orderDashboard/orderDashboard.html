@@ -1,4 +1,18 @@
 <template>
-    <c-order-placement></c-order-placement>
-    <c-order-status></c-order-status>
+    <div class="c-container">
+        <lightning-layout horizontal-align="space">
+            <lightning-layout-item padding="around-small">
+                <c-order-placement></c-order-placement>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small">
+                <c-order-status></c-order-status>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small">
+                <c-order-summary></c-order-summary>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+    
+    
+    
 </template>

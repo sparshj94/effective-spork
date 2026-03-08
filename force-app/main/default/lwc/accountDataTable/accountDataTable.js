@@ -1,4 +1,5 @@
 import { LightningElement, wire } from 'lwc';
+import viewModalFile from './viewModal.html'
 import getAccounts from '@salesforce/apex/AccountContactController.getAccounts'
 import {MessageContext, publish} from 'lightning/messageService';
 import COMPONENT_COMMUNICATION from '@salesforce/messageChannel/ComponentCommunication__c';

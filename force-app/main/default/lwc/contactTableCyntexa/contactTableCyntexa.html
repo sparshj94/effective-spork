@@ -1,0 +1,22 @@
+<template>
+    <div>
+        <lightning-button label="New Contact" onclick={handleNewContact}></lightning-button>
+        <lightning-button label="Recently View" onclick={handleRecenltyView}></lightning-button>
+    </div>
+    <div style="height: 380px;">
+        <lightning-datatable
+                    key-field="Id"
+                    data={contacts}
+                    columns={columns}
+                    enable-infinite-loading
+                    onloadmore={loadMoreData}
+                    hide-checkbox-column="true"
+                    show-row-number-column="true"
+                    onrowaction={handleRowAction}>
+        </lightning-datatable>
+    </div>
+
+
+
+    
+</template>

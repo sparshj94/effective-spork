@@ -1,3 +1,15 @@
 <template>
-    
+
+    <lightning-card title="Order Status Dashboard">
+        <template if:false={isOrder}><p>No orders yet...!</p></template>
+            <template if:true={isOrder}>
+                
+                    <p>ORDER ID: {orderId}</p>
+                    <p>CUSTOMER NAME: {customerName}</p>
+                    <p>ITEM: {item}</p>
+                    <p>QUANTITY: {quantity}</p>
+                    <p>STATUS: {status}</p>
+                
+            </template>
+    </lightning-card>
 </template>

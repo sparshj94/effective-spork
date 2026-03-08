@@ -1,5 +1,5 @@
 import { LightningElement, wire } from 'lwc';
-import ORDER_CHANNEL from '@salesforce/messageChannel/OrderCommunication__c';
+import COMPONENT_COMMUNICATION from '@salesforce/messageChannel/ComponentCommunication__c';
 import {MessageContext, publish} from 'lightning/messageService'
 export default class OrderPlacement extends LightningElement {
 
@@ -27,7 +27,7 @@ export default class OrderPlacement extends LightningElement {
         if(this.itemValue && this.customerName && this.quantity){
             const orderId = this.generateUniqueishId();
             const payload = {orderId : orderId, customerName:this.customerName , item:this.itemValue, quantity:this.quantity, status:'ORDER PLACED'};
-            publish(this.messageContext, ORDER_CHANNEL, payload);
+            publish(this.messageContext, COMPONENT_COMMUNICATION, payload);
         }
 
     }

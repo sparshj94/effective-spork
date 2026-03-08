@@ -3,4 +3,4 @@
     <masterLabel>SampleMessageChannel</masterLabel>
     <isExposed>true</isExposed>
     <description>This is a sample Lightning Message Channel.</description>
-</LightningMessageChannel>
+</LightningMessageChannel>  
