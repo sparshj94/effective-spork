@@ -1,3 +1,42 @@
-<template>
-    
+<!-- <template>
+    <lightning-card>
+  <div class="slds-m-around_medium">
+   <div class="slds-m-bottom_medium slds-list_horizontal slds-grid_align-spread">
+    <h2 class="slds-text-heading_medium">Opportunities</h2>
+    <lightning-input
+       type="search"
+       variant="label-hidden"
+       placeholder="Type to search..."
+       class="slds-size_1-of-3">
+    </lightning-input>
+    <lightning-button label="Search" onclick={handleSearch} class="slds-m-left_x-small"></lightning-button>
+   </div>
+
+    <div style="height:500px">
+        <lightning-datatable key-field="Id"
+                data={filteredData}
+                columns={columns}
+                enable-infinite-loading={enableInfiniteLoading}
+                onloadmore={loadMoreData}
+                hide-checkbox-column="true"
+                show-row-number-column="true">
+        </lightning-datatable> 
+    </div>
+  </div>
+ </lightning-card>
+</template> -->
+
+
+ <template>
+    <lightning-card title="Open Opportunities">
+        <div style="height: 300px;" class="slds-m-around_medium">
+            <c-custom-datatable
+                key-field="Id"
+                data={filteredData}
+                columns={columns}
+                draft-values={draftValues}
+                onsave={handleSave}>
+            </c-custom-datatable>
+        </div>
+    </lightning-card>
 </template>
