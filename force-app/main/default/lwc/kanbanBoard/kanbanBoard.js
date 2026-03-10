@@ -1,95 +1,109 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, track } from 'lwc';
 
 export default class KanbanBoard extends LightningElement {
-    draggedTaskId;
-    stages = ['To Do', 'In Progres', 'QA Sandbox', 'Production'];
-    @track tasks = []
-    isInputFieldToDisplay = false;
-    isToDrag = false;
-    isSelected = false;
-    @track selectedTasks = [];
-    @track Values;
-    handleAddTask(){
-        this.isInputFieldToDisplay = true;
-    }
-    handleReadyTask(){
-        console.log('in ready task');
-        this.selectedTasks.map(res=>{
-            console.log(res.task);
-            console.log(res.isDragable);
-            
-        })
-    }
-    handleCheckbox(){
-        this.isSelected = !this.isSelected
-        
-    }
+    // Start with a completely empty array for dynamic user creation
+    @track tasks = [];
     
-     handleChangeCheck(event) {      
-        this.Values =  event.target.value;
-        // console.log(event.target.value) ;
-        console.log('chk',event.target.checked);
-        
-        if (event.target.checked) {
-            console.log('tru');
-            this.tasks.map(t=>{
-                console.log(t.task);
-                console.log(t.isDragable);
-            })
-            // this.tasks.filter(t=>t.task===this.Values).forEach(t=>t.isDragable = true);
-            this.tasks.filter(t=>t.task===this.Values).forEach(t=>{
-                //change color also 
-                t.isDragable = true
-                this.selectedTasks.push({task:this.Values, isDragable:true});
+    @track isModalOpen = false;
+    newTaskName = '';
+    
+    // Start the counter at 1 for dynamically generated tasks
+    taskIdCounter = 1; 
+
+    // Getters to filter tasks for each column and compute their CSS/Draggable state
+    get todoTasks() {
+        return this.tasks.filter(t => t.stage === 'To Do').map(t => ({
+            ...t,
+            cssClass: t.isReady ? 'task-card ready-task' : 'task-card',
+            isDraggable: t.isReady
+        }));
+    }
+
+    get inProcessTasks() { return this.formatTasksForStage('In Process'); }
+    get qaTasks() { return this.formatTasksForStage('QA Sandbox'); }
+    get prodTasks() { return this.formatTasksForStage('Production'); }
+
+    // Helper for formatting tasks outside of 'To Do'
+    formatTasksForStage(stage) {
+        return this.tasks.filter(t => t.stage === stage).map(t => ({
+            ...t,
+            cssClass: 'task-card ready-task', // Keeps the color once moved
+            isDraggable: stage !== 'Production' // Disables dragging if in Production
+        }));
+    }
+
+    // Modal Handlers
+    handleAddTask() {
+        this.isModalOpen = true;
+    }
+
+    closeModal() {
+        this.isModalOpen = false;
+        this.newTaskName = '';
+    }
+
+    handleInputChange(event) {
+        this.newTaskName = event.target.value;
+    }
+
+    // This method handles the dynamic creation of tasks
+    saveNewTask() {
+        if (this.newTaskName.trim() !== '') {
+            this.tasks.push({
+                id: String(this.taskIdCounter++), // Assigns a unique ID to every new task
+                name: this.newTaskName,
+                stage: 'To Do',
+                isReady: false,
+                selected: false
             });
-
-            this.selectedTasks.map(t=>{
-                console.log('r',t.task);
-                console.log(t.isDragable);
-                
-            })
-
-            // this.selectedTasks.push( {task: this.Values, isDragable:true});
-            // console.log(this.selectedTasks[0].task);
-            
-        } else {
-            // try {
-            //     this.index = this.selectedTasks.indexOf( this.Values);
-            //     this.selectedTasks.splice(this.index, 1);
-            // } catch (err) {
-            //     //error message
-            // }
-            console.log('else');
-            
+            this.closeModal();
         }
-        // this.selectedTasks.map(res =>{
-        //     console.log(res);
-            
-        // })
     }
 
-    addTask(){
-        // console.log('add taks2');
-        const task = this.template.querySelector('lightning-input').value;
-        // console.log('t1',task);
-        this.tasks.push({task:task, isDragable:false});
-        // this.tasks = [...this.tasks, ...task];
-        // console.log('tarr',task);
-        this.isInputFieldToDisplay = false;
-    }
-
-    handleDragStart(event) {
-        if(this.isToDrag){
-            this.draggedTaskId = event.currentTarget.dataset.id;
-        }
+    // Checkbox and Ready Button Logic
+    handleCheckboxChange(event) {
+        const taskId = event.target.dataset.id;
+        const isChecked = event.target.checked;
         
+        const taskIndex = this.tasks.findIndex(t => t.id === taskId);
+        if (taskIndex !== -1) {
+            this.tasks[taskIndex].selected = isChecked;
+        }
+    }
+
+    handleReadyTask() {
+        this.tasks = this.tasks.map(task => {
+            if (task.stage === 'To Do' && task.selected) {
+                return { ...task, isReady: true };
+            }
+            return task;
+        });
+    }
+
+    // Drag and Drop Logic
+    handleDragStart(event) {
+        const taskId = event.target.dataset.id;
+        event.dataTransfer.setData('taskId', taskId);
     }
 
     handleDragOver(event) {
-        event.preventDefault(); // allow drop
+        event.preventDefault(); 
     }
 
     handleDrop(event) {
         event.preventDefault();
+        const taskId = event.dataTransfer.getData('taskId');
+        const newStage = event.currentTarget.dataset.stage;
+
+        const taskIndex = this.tasks.findIndex(t => t.id === taskId);
+        
+        if (taskIndex !== -1) {
+            if (this.tasks[taskIndex].stage === 'Production') {
+                return; 
+            }
+            
+            this.tasks[taskIndex].stage = newStage;
+            this.tasks = [...this.tasks];
+        }
     }
 }

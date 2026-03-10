@@ -1,40 +1,87 @@
+.kanban-wrapper {
+    background: white;
+    padding: 20px;
+    font-family: sans-serif;
+}
+
+.main-header {
+    background-color: #ed8b46; /* Orange header */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border: 1px solid #c97539;
+}
+
 .kanban-container {
     display: flex;
-    gap: 1rem;
-    justify-content: space-around;
+    gap: 10px;
+    align-items: flex-start;
 }
 
 .kanban-column {
     flex: 1;
-    background: #f4f6f9;
-    padding: 1rem;
-    border-radius: 8px;
-    min-height: 300px;
+    border: 2px solid #888;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
 }
 
-.column-title {
-    font-weight: bold;
-    margin-bottom: 1rem;
+.column-header {
+    background-color: #00004d; /* Dark blue header */
+    color: white;
     text-align: center;
+    padding: 8px;
+    font-weight: bold;
 }
 
-.kanban-card {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 0.75rem;
-    margin-bottom: 0.75rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.action-buttons {
+    display: flex;
+    background-color: #6da4d9; /* Light blue button area */
+    padding: 5px;
+    gap: 5px;
+}
+
+.btn {
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    flex: 1;
+}
+
+.btn:hover {
+    text-decoration: underline;
+}
+
+.task-list {
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.task-card {
+    border: 1px solid #666;
+    padding: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: white; /* Default white */
+    font-weight: bold;
+}
+
+/* Green coloring for ready tasks */
+.ready-task {
+    background-color: #5cb85c; 
+}
+
+/* Add a visual cue when dragging is possible */
+.ready-task[draggable="true"] {
     cursor: grab;
 }
 
-.task-title {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #0070d2;
-}
-
-.task-owner, .task-date {
-    font-size: 0.8rem;
-    color: #555;
+.ready-task[draggable="true"]:active {
+    cursor: grabbing;
 }
