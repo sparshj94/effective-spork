@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
     <lightning-card>
   <div class="slds-m-around_medium">
    <div class="slds-m-bottom_medium slds-list_horizontal slds-grid_align-spread">
@@ -13,30 +13,28 @@
    </div>
 
     <div style="height:500px">
-        <lightning-datatable key-field="Id"
-                data={filteredData}
-                columns={columns}
-                enable-infinite-loading={enableInfiniteLoading}
-                onloadmore={loadMoreData}
-                hide-checkbox-column="true"
-                show-row-number-column="true">
-        </lightning-datatable> 
+        
+            <lightning-card title="Open Opportunities">
+                <div style="height: 300px;" class="slds-m-around_medium">
+                    <c-custom-datatable
+                        key-field="Id"
+                        data={filteredData}
+                        columns={columns}
+                        draft-values={draftValues}
+                        onsave={handleSave}
+                        onrowselection={getSelectedRow}
+                        oncellchange={handleCellChange}
+                        enable-infinite-loading
+                        onloadmore={loadMoreData}>
+                    </c-custom-datatable>
+                </div>
+                
+            </lightning-card>
+        
     </div>
   </div>
  </lightning-card>
-</template> -->
+</template> 
 
 
- <template>
-    <lightning-card title="Open Opportunities">
-        <div style="height: 300px;" class="slds-m-around_medium">
-            <c-custom-datatable
-                key-field="Id"
-                data={filteredData}
-                columns={columns}
-                draft-values={draftValues}
-                onsave={handleSave}>
-            </c-custom-datatable>
-        </div>
-    </lightning-card>
-</template>
+ 

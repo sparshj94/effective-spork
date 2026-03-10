@@ -1,32 +1,39 @@
-import LightningDatatable from 'lightning/datatable'
-import {wire, track } from 'lwc'
+
+import {wire, track,LightningElement } from 'lwc'
 import getOpenOpportunities from '@salesforce/apex/OpportunityController.getOpenOpportunity'
+import { updateRecord } from 'lightning/uiRecordApi';
+ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
- 
 
-
-export default class OpportunityCustomDataTable extends LightningDatatable {
+export default class OpportunityCustomDataTable extends LightningElement {
 
     
     
-    draftValues = [];
+    @track draftValues = [];
     searchedKey ='';
-    data = [];
+    @track data = [];
     error = undefined;
-    filteredData = [];
+    @track filteredData = [];
     rowLimit = 10;
     rowOffSet=0;
     isLoading  = true;
     enableInfiniteLoading = true;
     accountRecordTypeId ='';
     pickListValues  = [];
+    selectedRows = []
 
 
     stageOptions = [
         { label: 'Prospecting', value: 'Prospecting' },
         { label: 'Qualification', value: 'Qualification' },
         { label: 'Needs Analysis', value: 'Needs Analysis' },
-        { label: 'Negotiation/Review', value: 'Negotiation/Review' }
+        { label: 'Value Proposition', value: 'Value Proposition' },
+        { label: 'Id. Decision Makers', value: 'Id. Decision Makers' },
+        { label: 'Perception Analysis', value: 'Perception Analysis' },
+        { label: 'Proposal/Price Quote', value: 'Proposal/Price Quote' },
+        { label: 'Negotiation/Review', value: 'Negotiation/Review' },
+        { label: 'Closed Won', value: 'Closed Won' },
+        { label: 'Closed Lost', value: 'Closed Lost' },
     ];
 
     columns = [
@@ -119,10 +126,97 @@ export default class OpportunityCustomDataTable extends LightningDatatable {
         console.log("apply search end");
     }
 
+    getSelectedRow(event){
+       this.selectedRows = event.detail.selectedRows;
+    }
+    handleCellChange(event) {
+        const draftChanges = event.detail.draftValues;
+        
+        if (draftChanges.length === 0 || this.selectedRows.length <= 1) {
+            return; 
+        }
+
+        const changedRow = draftChanges[0];
+        const changedId = changedRow.Id;
+
+        // Check if the row the user just edited is actually one of the selected rows
+        const isEditedRowSelected = this.selectedRows.some(row => row.Id === changedId);
+
+        if (isEditedRowSelected) {
+            // Find out WHICH field they changed (e.g., 'StageName') and the new value
+            const changedFieldName = Object.keys(changedRow).find(key => key !== 'Id');
+            const newValue = changedRow[changedFieldName];
+
+            // Create a Map of our existing draft values so we don't overwrite previous edits
+            let currentDraftsMap = new Map(this.draftValues.map(draft => [draft.Id, draft]));
+
+            // Loop through every selected row and apply the new value
+            this.selectedRows.forEach(selectedRow => {
+                // Get the existing draft for this row, or create a new one if it doesn't exist yet
+                let draftUpdate = currentDraftsMap.get(selectedRow.Id) || { Id: selectedRow.Id };
+                
+                // Update the specific field (StageName) with the new bulk value
+                draftUpdate[changedFieldName] = newValue;
+                
+                // Put it back in the map
+                currentDraftsMap.set(selectedRow.Id, draftUpdate);
+            });
+
+            // Reassign the draftValues array to trigger the UI update (showing the yellow highlights)
+            this.draftValues = Array.from(currentDraftsMap.values());
+        }
+    }
+
     handleSave(event) {
-        const updatedFields = event.detail.draftValues;
-        console.log('Draft Values to Save:', JSON.stringify(updatedFields));
-        // You would typically call an Apex method or use UI API (updateRecord) here to save changes
+        // 1. Grab the array of edits from the datatable
+        const draftValues = event.detail.draftValues;
+
+        // 2. Format each edit into the { fields: {...} } structure that UI API requires
+        const recordInputs = draftValues.map(draft => {
+            // This takes {Id: '006...', StageName: 'Closed Won'} 
+            // and turns it into { fields: {Id: '006...', StageName: 'Closed Won'} }
+            return { fields: Object.assign({}, draft) };
+        });
+
+        // 3. Create an array of update tasks
+        const promises = recordInputs.map(recordInput => updateRecord(recordInput));
+
+        // 4. Execute all update tasks simultaneously
+        Promise.all(promises)
+            .then(() => {
+                // Success! Show a green toast message
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Opportunities updated successfully',
+                        variant: 'success'
+                    })
+                );
+
+                // 5. Wipe out the draft values to remove the yellow highlights
+                this.draftValues = [];
+                
+                // Clear the checkboxes so the user starts fresh
+                this.template.querySelector('c-custom-datatable').selectedRows = [];
+                this.selectedRows = [];
+
+                // 6. Refresh the table data to show the new values
+                // Since you use imperative Apex, we reset the table and reload
+                this.data = [];
+                this.rowOffSet = 0;
+                this.enableInfiniteLoading = true;
+                this.loadData();
+            })
+            .catch(error => {
+                // Uh oh, something went wrong (like a validation rule failed)
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error updating records',
+                        message: error.body ? error.body.message : error.message,
+                        variant: 'error'
+                    })
+                );
+            });
     }
 
 }

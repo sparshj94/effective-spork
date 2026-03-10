@@ -1,0 +1,38 @@
+<template>
+    <lightning-card title="Campus Recruitment Dashboard" icon-name="standard:education">
+        <div class="slds-p-around_medium">
+            
+            <lightning-accordion allow-multiple-sections-open>
+                <template for:each={recruitmentData} for:item="college">
+                    <lightning-accordion-section name={college.collegeName} label={college.collegeName} key={college.collegeId}>
+                        
+                        <lightning-accordion allow-multiple-sections-open>
+                            <template for:each={college.years} for:item="yearData">
+                                <lightning-accordion-section name={yearData.year} label={yearData.year} key={yearData.year}>
+                                    
+                                    <lightning-accordion allow-multiple-sections-open>
+                                        <template for:each={yearData.profiles} for:item="profileData">
+                                            <lightning-accordion-section name={profileData.profileName} label={profileData.profileName} key={profileData.profileName}>
+                                                
+                                                <lightning-datatable
+                                                    key-field="Id"
+                                                    data={profileData.students}
+                                                    columns={columns}
+                                                    hide-checkbox-column="true">
+                                                </lightning-datatable>
+
+                                            </lightning-accordion-section>
+                                        </template>
+                                    </lightning-accordion>
+
+                                </lightning-accordion-section>
+                            </template>
+                        </lightning-accordion>
+
+                    </lightning-accordion-section>
+                </template>
+            </lightning-accordion>
+
+        </div>
+    </lightning-card>
+</template>
