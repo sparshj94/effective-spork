@@ -1,0 +1,49 @@
+<template>
+    <lightning-card title="Project Tasks – Kanban Board" icon-name="standard:task">
+        <div class="kanban-container">
+            <div class="kanban-column" ondragover={handleDragOver} ondrop={handleDrop}>
+                <h2 class=”column-title”>To Do</h2>
+                <div>
+                    <button onclick={handleAddTask}>Add Taks</button>
+                    <button onclick={handleReadyTask}>Ready</button>
+                </div>
+                <template if:true={isInputFieldToDisplay}>
+                    <lightning-input
+                        
+                        variant="label-hidden"
+                        placeholder="Enter task"
+                    >
+                    </lightning-input>
+                    <button onclick={addTask}>Add taks</button>
+                </template>
+                <template for:each={tasks} for:item="task">
+                        
+                        <div key={task.task} 
+                            class="kanban-card"
+                            draggable={task.isDragable}
+                            data-id={task.task}
+                            ondragstart={handleDragStart}>
+                            <p class=”task-title”>{task.task}</p>
+                            <p class=”task-title”>{task.isDragable}</p>
+                            <lightning-input
+                                style="padding : 10px; font-weight : bold;"
+                                data-id="checkbox" 
+                                class="slds-p-left_large"
+                                key={task.task} 
+                                label={task.task} 
+                                type="checkbox" 
+                                value={task.task} 
+                                onchange={handleChangeCheck}>
+                            </lightning-input>
+                        </div>
+                </template>
+            </div>
+            <div class="kanban-column" ondragover={handleDragOver} ondrop={handleDrop}>
+
+            </div>
+            <div class="kanban-column" ondragover={handleDragOver} ondrop={handleDrop}>
+
+            </div>
+        </div>
+    </lightning-card>
+</template>
