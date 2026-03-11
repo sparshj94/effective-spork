@@ -1,0 +1,31 @@
+<template>
+    <div>
+        <lightning-combobox
+            name="progress"
+            label="Status"
+            value={value}
+            placeholder="Select Progress"
+            options={propertyTypePicklist}
+            onchange={handleChange} ></lightning-combobox>
+    </div>
+    <lightning-accordion class="example-accordion" onsectiontoggle={handleSectionToggle}>
+        <template for:each={groupByFromYear} for:item="year">
+            <lightning-accordion-section name={year.year} label={year.year} key={Id}>
+            <p>This is the content area for section A.</p>
+            
+            <lightning-datatable
+                key-field="id"
+                columns={columns}
+                data={year.items}
+                hide-checkbox-column
+                default-sort-direction={defaultSortDirection}
+                sorted-direction={sortDirection}
+                sorted-by={sortBy}
+                onsort={onHandleSort}>
+            </lightning-datatable>
+            </lightning-accordion-section>
+        </template>
+        
+    </lightning-accordion>
+    <h2>compppp</h2>
+</template>
