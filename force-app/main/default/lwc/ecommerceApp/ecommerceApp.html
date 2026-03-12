@@ -1,0 +1,56 @@
+<template>
+    
+    <div>
+        <template  for:each={productData} for:item="product" for:index="index">
+           <lightning-card icon-name="standard:account" variant="base" key={Id} class="prod">
+                <h1>{product.Name}</h1>
+                <h1>{product.Description}</h1>
+                <h1>{product.UnitPrice}</h1>
+                <h1>{product.DisplayUrl}</h1>
+                <lightning-button 
+                    variant="base"
+                    label="Add To Cart" 
+                    data-product-id={product.Id}
+                    data-product-name ={product.Name}
+                    class="productBtn"
+                    value={product}
+                    onclick={handleAddProduct} 
+                ></lightning-button>
+            </lightning-card>
+        </template>
+    </div>
+
+    <div>
+        <h1>Shopping Cart</h1>
+
+        <div>
+            <div class="c-container">
+                <lightning-layout horizontal-align="space">
+                    <lightning-layout-item padding="around-small">
+                        <h1>Product</h1>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <h1>Quantity</h1>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <h1>Price</h1>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+            <template  for:each={cartArray} for:item="product" for:index="index">
+            <lightning-card icon-name="standard:account" variant="base" key={Id} class="prod">
+                    <h1>{product.Name}</h1>
+                    <h1>{product.Quantity}</h1>
+                    <lightning-button 
+                        variant="base"
+                        label="*" 
+                        data-product-id={product.Id}
+                        data-product-name ={product.Name}
+                        value={product}
+                        onclick={removeItemCart} 
+                    ></lightning-button>
+                </lightning-card>
+        </template>
+        </div>
+    </div>
+</template>
