@@ -1,31 +1,93 @@
 <template>
-    <div>
-        <lightning-combobox
-            name="progress"
-            label="Status"
-            value={value}
-            placeholder="Select Progress"
-            options={propertyTypePicklist}
-            onchange={handleChange} ></lightning-combobox>
-    </div>
-    <lightning-accordion class="example-accordion" onsectiontoggle={handleSectionToggle}>
-        <template for:each={groupByFromYear} for:item="year">
-            <lightning-accordion-section name={year.year} label={year.year} key={Id}>
-            <p>This is the content area for section A.</p>
-            
-            <lightning-datatable
-                key-field="id"
-                columns={columns}
-                data={year.items}
-                hide-checkbox-column
-                default-sort-direction={defaultSortDirection}
-                sorted-direction={sortDirection}
-                sorted-by={sortBy}
-                onsort={onHandleSort}>
-            </lightning-datatable>
-            </lightning-accordion-section>
-        </template>
+    <lightning-card title="Document Records">
         
-    </lightning-accordion>
-    <h2>compppp</h2>
+        <div slot="actions">
+            <lightning-button label="New" variant="brand" onclick={openNewModal}></lightning-button>
+        </div>
+
+        <div class="slds-grid slds-gutters slds-p-horizontal_medium slds-m-bottom_medium">
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-combobox
+                    name="typeFilter"
+                    label="Type Of Document"
+                    value={selectedType}
+                    options={propertyTypePicklist}
+                    onchange={handleTypeChange}>
+                </lightning-combobox>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-combobox
+                    name="validFilter"
+                    label="Is Valid"
+                    value={selectedValid}
+                    options={validPicklist}
+                    onchange={handleValidChange}>
+                </lightning-combobox>
+            </div>
+        </div>
+
+        <lightning-accordion allow-multiple-sections-open>
+            <template for:each={groupedData} for:item="group">
+                <lightning-accordion-section name={group.year} label={group.year} key={group.year}>
+                    
+                    <lightning-datatable
+                        key-field="Id"
+                        columns={columns}
+                        data={group.items}
+                        hide-checkbox-column="true"
+                        default-sort-direction={defaultSortDirection}
+                        sorted-direction={sortDirection}
+                        sorted-by={sortBy}
+                        onsort={onHandleSort}
+                        onrowaction={handleRowAction}>
+                    </lightning-datatable>
+
+                </lightning-accordion-section>
+            </template>
+        </lightning-accordion>
+    </lightning-card>
+
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">{modalHeader}</h2>
+                </header>
+                
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-record-edit-form object-api-name="Document__c" record-id={selectedRecordId} onsuccess={handleSuccess}>
+                        <lightning-messages></lightning-messages>
+                        
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Name"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Document_Type__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="ValidFromYear__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="ValidToYear__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="isActive__c"></lightning-input-field>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-m-top_medium slds-text-align_center">
+                            <lightning-button class="slds-m-right_small" variant="neutral" label="Cancel" onclick={closeModal}></lightning-button>
+                            <lightning-button variant="brand" type="submit" label="Save"></lightning-button>
+                        </div>
+                    </lightning-record-edit-form>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
 </template>
