@@ -1,0 +1,40 @@
+<template>
+    <div>
+        <lightning-input type="text" label="Enter Account Name" class="accName"></lightning-input>
+        <lightning-input type="text" label="Enter Industry" class="accIndustry"></lightning-input>
+        <lightning-combobox
+            name="progress"
+            label="Status"
+            value={value}
+            placeholder="Select Rating"
+            class="accRating"
+            options={ratingPickListValues.values}
+        ></lightning-combobox>
+
+        <lightning-button variant="brand" label="Search" title="Primary action" onclick={handleClick} ></lightning-button>
+    </div>
+
+    <div>
+        <template if:true={isNewBtnToShow}>
+            <h1>{filterMessage}</h1>
+            <lightning-button variant="brand" label="New" title="Primary action" onclick={handle} ></lightning-button>
+        </template> 
+        <template if:true={isTableToDisplay}>
+            <lightning-datatable
+                key-field="Id"
+                data={accountCopy}
+                columns={columns}
+                onrowselection={getSelectedName}>
+            </lightning-datatable>
+        </template>
+
+        <template if:true={isContactTableToDisplay}>
+            <lightning-datatable
+                key-field="Id"
+                data={contactData}
+                columns={contactcolumns}
+                onrowselection={getSelectedContactName}>
+            </lightning-datatable>
+        </template>
+    </div>
+</template>
