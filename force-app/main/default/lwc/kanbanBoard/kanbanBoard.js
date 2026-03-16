@@ -49,13 +49,23 @@ export default class KanbanBoard extends LightningElement {
     // This method handles the dynamic creation of tasks
     saveNewTask() {
         if (this.newTaskName.trim() !== '') {
-            this.tasks.push({
-                id: String(this.taskIdCounter++), // Assigns a unique ID to every new task
-                name: this.newTaskName,
-                stage: 'To Do',
-                isReady: false,
-                selected: false
-            });
+            this.tasks = [
+                ...this.tasks,
+                {
+                    id: String(this.taskIdCounter++), // Assigns a unique ID to every new task
+                    name: this.newTaskName,
+                    stage: 'To Do',
+                    isReady: false,
+                    selected: false
+                }
+            ]
+            // this.tasks.push({
+            //     id: String(this.taskIdCounter++), // Assigns a unique ID to every new task
+            //     name: this.newTaskName,
+            //     stage: 'To Do',
+            //     isReady: false,
+            //     selected: false
+            // });
             this.closeModal();
         }
     }
@@ -65,10 +75,16 @@ export default class KanbanBoard extends LightningElement {
         const taskId = event.target.dataset.id;
         const isChecked = event.target.checked;
         
-        const taskIndex = this.tasks.findIndex(t => t.id === taskId);
-        if (taskIndex !== -1) {
-            this.tasks[taskIndex].selected = isChecked;
-        }
+        // const taskIndex = this.tasks.findIndex(t => t.id === taskId);
+        this.tasks = this.tasks.map(tsk=>{
+            if(tsk.id===taskId){
+                return {...tsk, selected:isChecked}
+            }
+            return tsk;
+        })
+        // if (taskIndex !== -1) {
+        //     this.tasks[taskIndex].selected = isChecked;
+        // }
     }
 
     handleReadyTask() {
