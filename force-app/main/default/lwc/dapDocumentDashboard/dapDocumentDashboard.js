@@ -1,13 +1,15 @@
 import { LightningElement, wire, track } from 'lwc';
 import getAllDocuments from '@salesforce/apex/DocumentController.getAllDocuments';
+import insertDocuments from '@salesforce/apex/DocumentController.insertDocuments';
+import { getPicklistValues } from "lightning/uiObjectInfoApi";
+import DOCUMENT_TYPE from "@salesforce/schema/Document__c.Document_Type__c";
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 const tableColumns = [
     { label: 'Title', fieldName: 'Name' },
     { label: 'Valid From', fieldName: 'ValidFromYear__c', type: 'text', sortable: true},
     { label: 'Valid Till', fieldName: 'ValidToYear__c', type: 'text', sortable:true },
     { label: 'Document Type', fieldName: 'Document_Type__c', type: 'text' },
-    { label: 'Is Valid', fieldName: 'isActive__c', type: 'text' },
-    // { label: 'Icon', fieldName: 'icon', type:'icon',typeAttributes:{iconName:{fieldName:'icon'}, recordId:{fieldName:'Id'}}},
+    { label: 'Is Valid', fieldName: 'isActive__c', type: 'boolean' },
     {
         label: 'Preview',
         type: 'button-icon',
@@ -21,6 +23,19 @@ const tableColumns = [
 
 ];
 
+const options = [
+    { label: 'Identity', value: 'Identity' },
+    { label: 'School', value: 'School' },
+    { label: 'Company', value: 'Company' },
+    { label: 'College', value: 'College' },
+    { label: 'Property', value: 'Property' },
+]
+const validOptions = [
+    {label:"All", value:'all'},
+    {label:"Valid", value:'valid'},
+    {label:"InValid", value:'invalid'},
+
+]
 export default class DapDocumentDashboard extends LightningElement {
 
     documents = [];
@@ -30,6 +45,29 @@ export default class DapDocumentDashboard extends LightningElement {
     @track sortDirection;
     selectedRecordId;
     isModalOpen = false;
+    isNewModalOpen = false;
+    options = options;
+    docName;
+    docTypevalue;
+    fromDateVal;
+    toDateVal;
+    dataToInsert = [];
+    documentTypePicklist = []
+    selectedDocType = 'all';
+    selectedValid = 'all';
+    validOptions = validOptions;
+    @track filterData = [];
+    isToChangeData = true;
+
+    @wire(getPicklistValues, { recordTypeId: "012000000000000AAA", fieldApiName: DOCUMENT_TYPE })
+    getDocumentTypoes({error, data}){
+        if(data){
+            this.documentTypePicklist = [...data.values, { "attributes": null, "label": "All", "validFor": [], "value": "all" }];
+        }
+    }
+
+
+
     @wire(getAllDocuments)
     getDocuments({ error, data }) {
         if (data) {
@@ -51,17 +89,17 @@ export default class DapDocumentDashboard extends LightningElement {
 
         const result = Object.entries(grouped).map(([key, value]) => ({
             year: key,
-            docs: value
+            docs: value 
         }));
-
-        this.groupedData = result;
-
-        // this.tempdata.forEach(el => {
-        //     console.log('Year:', el.year);
-        //     console.log('Documents:', JSON.parse(JSON.stringify(el.docs)));
-        // });
-
-        // console.log('Final grouped data', JSON.parse(JSON.stringify(this.tempdata)));
+        if(this.isToChangeData){
+            this.groupedData = result;
+            this.filterData = this.groupedData;
+            this.isToChangeData = false;
+        }
+        else{
+            this.filterData = result;
+        }
+        // console.log(this.groupedData);
     }
 
     doSorting(event) {
@@ -89,6 +127,182 @@ export default class DapDocumentDashboard extends LightningElement {
         
         this.groupedData = sortedData;
     }
+     json = [
+    {
+        "year": "2011",
+        "docs": [
+            {
+                "Id": "a0Pfj000001MbWbEAK",
+                "Name": "DL",
+                "Document_Type__c": "Identity",
+                "isActive__c": false,
+                "ValidFromYear__c": "2011",
+                "ValidToYear__c": "2030",
+                "icon": "utility:preview"
+            }
+        ]
+    },
+    {
+        "year": "2016",
+        "docs": [
+            {
+                "Id": "a0Pfj000001Mj17EAC",
+                "Name": "Laptop Bll",
+                "Document_Type__c": "Company",
+                "isActive__c": true,
+                "ValidFromYear__c": "2016",
+                "ValidToYear__c": "2026",
+                "icon": "utility:preview"
+            }
+        ]
+    },
+    {
+        "year": "2020",
+        "docs": [
+            {
+                "Id": "a0Pfj000001KctNEAS",
+                "Name": "Home loan document",
+                "Document_Type__c": "Property",
+                "isActive__c": true,
+                "ValidFromYear__c": "2020",
+                "ValidToYear__c": "2035",
+                "icon": "utility:preview"
+            }
+        ]
+    },
+    {
+        "year": "2022",
+        "docs": [
+            {
+                "Id": "a0Pfj000001KclJEAS",
+                "Name": "Aadhar Card",
+                "Document_Type__c": "Identity",
+                "isActive__c": true,
+                "ValidFromYear__c": "2022",
+                "ValidToYear__c": "2030",
+                "icon": "utility:preview"
+            },
+            {
+                "Id": "a0Pfj000001Kh1pEAC",
+                "Name": "PAN Card",
+                "Document_Type__c": "Identity",
+                "isActive__c": true,
+                "ValidFromYear__c": "2022",
+                "ValidToYear__c": "2033",
+                "icon": "utility:preview"
+            },
+            {
+                "Id": "a0Pfj000001KhMoEAK",
+                "Name": "Driving Licence",
+                "Document_Type__c": "Identity",
+                "isActive__c": false,
+                "ValidFromYear__c": "2022",
+                "ValidToYear__c": "208",
+                "icon": "utility:preview"
+            },
+            {
+                "Id": "a0Pfj000001LCtjEAG",
+                "Name": "nocc",
+                "Document_Type__c": "College",
+                "isActive__c": false,
+                "ValidFromYear__c": "2022",
+                "ValidToYear__c": "2029",
+                "icon": "utility:preview"
+            },
+            {
+                "Id": "a0Pfj000001LHYLEA4",
+                "Name": "offer letter",
+                "Document_Type__c": "Company",
+                "isActive__c": true,
+                "ValidFromYear__c": "2022",
+                "ValidToYear__c": "2025",
+                "icon": "utility:preview"
+            },
+            {
+                "Id": "a0Pfj000001LKETEA4",
+                "Name": "home loan",
+                "Document_Type__c": "Property",
+                "isActive__c": true,
+                "ValidFromYear__c": "2022",
+                "ValidToYear__c": "2045",
+                "icon": "utility:preview"
+            }
+        ]
+    },
+    {
+        "year": "2025",
+        "docs": [
+            {
+                "Id": "a0Pfj000001Kcq9EAC",
+                "Name": "Offer Letter",
+                "Document_Type__c": "Company",
+                "isActive__c": false,
+                "ValidFromYear__c": "2025",
+                "ValidToYear__c": "2026",
+                "icon": "utility:preview"
+            }
+        ]
+    }
+]
+
+    handleFilterData(){
+        console.log("Called Handle");
+        if(this.selectedDocType==='all' && this.selectedValid==='all'){
+            console.log('if');
+            
+            this.filterData = [...this.groupedData];
+        }
+        else{
+            console.log('else');
+            
+            let filter2 = this.selectedValid==='valid' ? true : false;
+            let testData = [];
+            console.log('else2');
+            let check = true;
+            // if(this.selectedDocType==='all'){
+            //     this.fil = [...this.groupedData];
+            //     check = false;
+            // } 
+            this.groupedData.forEach(element2 => {
+                element2.docs.forEach(element=>{
+                        if(this.selectedDocType==='all'){
+                            if(element.isActive__c == filter2){
+                                testData = [...testData,element];
+                            }
+                        } else if(this.selectedValid==='all' && element.Document_Type__c===this.selectedDocType){
+                            testData = [...testData,element];
+                        } 
+                        else if(element.Document_Type__c == this.selectedDocType && element.isActive__c == filter2){
+                            console.log(JSON.stringify(element));
+                            testData = [...testData,element];
+                        }
+                })
+            });
+            this.groupData(testData);
+            console.log('else3');
+            console.log('gd---', testData);
+            // this.filterData = [...testData];
+            // console.log('DS-->' + this.filterData);
+            
+            
+            console.log("DAtaa---> " + JSON.stringify(testData));
+            console.log("DAta---> " + JSON.stringify(this.filterData));
+        }
+        
+    }
+
+    handleDocTypeFilter(event){
+        this.selectedDocType = event.detail.value;
+        console.log(this.selectedDocType);
+        this.handleFilterData();
+    }
+
+    handleValidTypeFilter(event){
+        this.selectedValid = event.detail.value;
+        this.handleFilterData();
+    }
+
+    
     handleIconClick(event){
         const actionName = event.detail.action.name;
         const row = event.detail.row;
@@ -113,4 +327,49 @@ export default class DapDocumentDashboard extends LightningElement {
         this.isModalOpen = false;
     }
 
+    handleNewButton(){
+        this.filterData();
+        this.isNewModalOpen = true;
+    }
+    handleName(event){
+        this.docName = event.detail.value;
+    }
+    handleDocType(event){
+        this.docTypevalue = event.detail.value;
+    }
+    handleToDate(event){
+        this.toDateVal = event.detail.value;
+    }
+    handleFromDate(event){
+        this.fromDateVal = event.detail.value
+    }
+    handleSubmitBtn(){
+        const data = {Name:this.docName, Document_Type__c:this.docTypevalue, Valid_From_Date__c:this.fromDateVal, Valid_To_Date__c:this.toDateVal};
+        this.dataToInsert = [...this.dataToInsert, data];
+        console.log('d',this.dataToInsert);
+        
+        this.sendData();
+        this.dataToInsert = [];
+        this.isNewModalOpen =false;
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: 'Success',
+                message: 'Document Inserted successfully',
+                variant: 'success'
+            })
+        );
+
+    }
+    sendData(){
+        return insertDocuments({"docList":this.dataToInsert}).then(data=>{
+            console.log(data);
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
 }
+
+
+
+[{"Id":"a0Pfj000001MbWbEAK","Name":"DL","Document_Type__c":"Identity","isActive__c":false,"ValidFromYear__c":"2011","ValidToYear__c":"2030","icon":"utility:preview"},{"Id":"a0Pfj000001KhMoEAK","Name":"Driving Licence","Document_Type__c":"Identity","isActive__c":false,"ValidFromYear__c":"2022","ValidToYear__c":"208","icon":"utility:preview"}]

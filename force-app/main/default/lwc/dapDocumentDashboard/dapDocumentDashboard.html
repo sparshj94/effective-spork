@@ -1,22 +1,36 @@
 <template>
     <div>
+        <lightning-button
+            class="slds-m-top_small"
+            label="Create new"
+            onclick={handleNewButton}
+        >
+        </lightning-button>
+    </div>
 
+    <div>
+        <div>
+            <lightning-combobox
+            name="progress"
+            label="Document Type"
+            value={selectedDocType}
+            placeholder="Select Progress"
+            options={documentTypePicklist}
+            onchange={handleDocTypeFilter} ></lightning-combobox>
+        </div>
+        <div>
+            <lightning-combobox
+            name="valid"
+            label="Valid Type"
+            value={selectedValid}
+            options={validOptions}
+            onchange={handleValidTypeFilter} ></lightning-combobox>
+        </div>
     </div>
     <div>
         <lightning-accordion class="example-accordion" active-section-name="B">
-            <template for:each={groupedData} for:item="year">
+            <template for:each={filterData} for:item="year">
                 <lightning-accordion-section name={year.year} label={year.year} key={year.year}>
-                    <p>This is the content area for section A.</p>
-                    <!-- <c-custom-datatable 
-                        key-field="Id" 
-                        columns={columns} 
-                        data={year.docs}
-                        hide-checkbox-column
-                        sorted-direction={sortDirection}
-                        sorted-by={sortBy}
-                        onsort={doSorting}
-                        onrowaction={handleIconClick}>
-                    </c-custom-datatable> -->
                     <lightning-datatable
                         key-field="Id"
                         columns={columns}
@@ -27,15 +41,6 @@
                         onsort={doSorting}
                         onrowaction={handleIconClick}>
                     </lightning-datatable>
-                    <!-- <lightning-datatable
-                        key-field="id"
-                        columns={columns}
-                        data={year.docs}
-                        hide-checkbox-column
-                        sorted-direction={sortDirection}
-                        sorted-by={sortBy}
-                        onsort={doSorting}>
-                    </lightning-datatable> -->
             </lightning-accordion-section>
             </template>
             
@@ -72,6 +77,50 @@
                         </lightning-button>
                     </lightning-record-edit-form>
                     Record Id: {selectedRecordId}
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button 
+                        label="Close"
+                        onclick={closeModal}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+
+        
+    </template>
+    <template if:true={isNewModalOpen}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">
+                        Create Documents
+                    </h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input label="Name" value={docName} onchange={handleName}></lightning-input>
+                    <lightning-input type="date"  label="Valid From Date" value={fromDateVal} onchange={handleFromDate}></lightning-input>
+                    <lightning-input type="date"   label="Valid From Date" value={toDateVal} onchange={handleToDate}></lightning-input>
+                    <lightning-combobox
+                        name="progress"
+                        label="Status"
+                        value={docTypevalue}
+                        placeholder="Select Progress"
+                        options={options}
+                        onchange={handleDocType} ></lightning-combobox>
+                    <lightning-button
+                            class="slds-m-top_small"
+                            type="submit"
+                            label="Create new"
+                            onclick={handleSubmitBtn}
+                        >
+                        </lightning-button>
                 </div>
 
                 <footer class="slds-modal__footer">
