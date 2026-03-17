@@ -1,0 +1,11 @@
+<template>
+    <table>
+        <tr <template if:true={contactsList} for:each={contactsList} for:item="con" for:index="index">
+           <li key={con.Id}>
+                {con.Name}
+           </li>
+        </template>>
+            
+        </tr>
+    </table>
+</template>

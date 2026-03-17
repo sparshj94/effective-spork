@@ -211,7 +211,7 @@ export default class DapDocumentDashboard extends LightningElement {
     }
 
     handleNewButton(){
-        this.filterData();
+        // this.filterData();
         this.isNewModalOpen = true;
     }
     handleName(event){
