@@ -1,11 +1,25 @@
 <template>
-    <table>
-        <tr <template if:true={contactsList} for:each={contactsList} for:item="con" for:index="index">
-           <li key={con.Id}>
-                {con.Name}
-           </li>
-        </template>>
-            
-        </tr>
-    </table>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <template for:each={tableCols} for:item="cols">
+                        <th key={cols}>{cols}</th>
+                    </template>
+                </tr>
+            </thead>
+            <tbody>
+                <template if:true={accountData}>
+                    <template for:each={accountData} for:item="con" for:index="index">
+                        <tr key={con.Id}>
+                            <td>{con.Name}</td>
+                            <td>{con.Industry}</td>
+                            <td>{con.Phone}</td>
+                        </tr>
+                    </template>
+                </template>
+            </tbody>
+        </table>
+    </div>
+    
 </template>
