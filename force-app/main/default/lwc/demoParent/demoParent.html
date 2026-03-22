@@ -1,0 +1,24 @@
+<template>
+
+    <c-generic-search
+
+        enable-text-search="true"
+        enable-date-filter="true"
+        enable-dynamic-query="true"
+
+        search-fields={searchFields}
+
+        onsearch={handleSearch}
+        onreset={handleReset}
+
+    >
+    </c-generic-search>
+
+
+    <c-generic-data-table
+        columns={columns}
+        data={filteredData}
+    >
+    </c-generic-data-table>
+
+</template>

@@ -1,0 +1,54 @@
+<template>
+
+    <!-- NORMAL SEARCH -->
+    <div>
+        <label>Normal Search</label>
+        <input type="text" onchange={handleSearchKey}>
+    </div>
+
+    <br/>
+
+    <!-- DYNAMIC SOQL SEARCH -->
+    <div>
+        <label>Dynamic Query</label>
+
+        <select onchange={handleField}>
+            <option value="Name">Name</option>
+            <option value="Industry">Industry</option>
+        </select>
+
+        <input type="text" onchange={handleValue}>
+
+        <button onclick={handleDynamicSearch}>
+            Search DB
+        </button>
+    </div>
+
+    <br/>
+
+    <!-- DATE FILTER -->
+    <div>
+
+        <label>Start Date</label>
+        <input type="date" onchange={handleStartDate}>
+
+        <label>End Date</label>
+        <input type="date" onchange={handleEndDate}>
+
+        <button onclick={handleDateFilter}>
+            Apply Date Filter
+        </button>
+
+    </div>
+
+    <br/>
+
+    <!-- STANDARD LWC DATATABLE -->
+
+    <lightning-datatable
+        key-field="Id"
+        data={filteredData}
+        columns={columns}>
+    </lightning-datatable>
+
+</template>

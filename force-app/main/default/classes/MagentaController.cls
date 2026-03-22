@@ -2,7 +2,7 @@
 global with sharing class MagentaController {
    
     
-    public class ResponseWrapper{
+    global class ResponseWrapper{
         String SuccessCount;
         String FailedCount;
         List<Record> Records;
@@ -42,7 +42,7 @@ global with sharing class MagentaController {
             emailContactMap.put(email, variable);
         }
 
-        List<Contact> existingContacts = [SELECT Id, Name, Email FROM Contact WHERE Email IN :emailIds];
+        List<Contact> existingContacts = [SELECT Id, LastName, Email FROM Contact WHERE Email IN :emailIds];
         List<Id> contactIds = new List<Id>();
         Map<String,Contact> existingContactMap = new Map<String,Contact>();
         for(Contact cn: existingContacts){

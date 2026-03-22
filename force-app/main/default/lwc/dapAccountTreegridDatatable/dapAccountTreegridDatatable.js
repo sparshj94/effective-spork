@@ -33,7 +33,7 @@ export default class DapAccountTreegridDatatable extends LightningElement {
     connectedCallback() {
         this.loadData();
     }
-
+    
     loadMoreData(event){
         const {target} = event;
         target.isLoading = true;
@@ -114,6 +114,3 @@ export default class DapAccountTreegridDatatable extends LightningElement {
         this.isRecordToView = false;
     }
 }
-
-
-

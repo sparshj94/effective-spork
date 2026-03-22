@@ -1,0 +1,40 @@
+<template>
+
+    <lightning-datatable
+        key-field="Id"
+        data={data}
+        columns={columns}
+        onrowselection={handleRowSelection}>
+    </lightning-datatable>
+
+    <br/>
+
+    <!-- MASS UPDATE -->
+
+    <div>
+
+        <label>Field to Update</label>
+
+        <select onchange={handleFieldChange}>
+            <option value="Name">Name</option>
+            <option value="Industry">Industry</option>
+        </select>
+
+        <label>Value</label>
+        <input type="text" onchange={handleValueChange}>
+
+        <button onclick={handleMassUpdate}>
+            Mass Update Selected
+        </button>
+
+    </div>
+
+    <br/>
+
+    <!-- MASS DELETE -->
+
+    <button onclick={handleMassDelete}>
+        Delete Selected Records
+    </button>
+
+</template>

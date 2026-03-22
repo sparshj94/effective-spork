@@ -5,7 +5,7 @@ export default class CustomTablePractice extends LightningElement {
     rowLimit = 10;
     offSet=0;
     accountData = [];
-    tableCols = ["Name", "Industry", "Phone"];
+    tableCols = ["Name", "Phone", "Industry"];
     loadData(){
         return getAccounts({"limitSize":this.rowLimit, "offSet":this.offSet}).then(data=>{
             this.accountData = data;

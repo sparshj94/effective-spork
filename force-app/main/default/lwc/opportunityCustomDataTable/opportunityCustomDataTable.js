@@ -1,4 +1,3 @@
-
 import {wire, track,LightningElement } from 'lwc'
 import getOpenOpportunities from '@salesforce/apex/OpportunityController.getOpenOpportunity'
 import { updateRecord } from 'lightning/uiRecordApi';

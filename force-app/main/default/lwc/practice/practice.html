@@ -1,0 +1,120 @@
+<template>
+    <lightning-card title="Star Automobiles">
+        <div class="slds-p-around_medium">
+
+            <!-- STAGE BUTTONS -->
+            <div class="slds-button-group">
+                <template for:each={stages} for:item="stage">
+                    <button key={stage}
+                        class={stageClass}
+                        data-stage={stage}
+                        onclick={handleStageClick}>
+                        {stage}
+                    </button>
+                </template>
+            </div>
+
+            <!-- STAGE BLOCKS -->
+            <template for:each={stageData} for:item="stage">
+                <div key={stage.name} class="slds-m-top_medium">
+
+                    <!-- HEADER -->
+                    <div class="slds-box slds-theme_shade">
+                        <div class="slds-grid slds-grid_align-spread">
+                            <b>{stage.name}</b>
+
+                            <lightning-button-icon
+                                icon-name={stage.icon}
+                                data-stage={stage.name}
+                                onclick={toggleStage}>
+                            </lightning-button-icon>
+                        </div>
+                    </div>
+
+                    <!-- TABLE -->
+                    <template if:true={stage.open}>
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Amount</th>
+                                    <th>Email</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <template for:each={stage.records} for:item="rec">
+                                    <tr key={rec.Id}>
+
+                                        <td>{rec.Id}</td>
+
+                                        <td>
+                                            <a data-id={rec.Id} onclick={navigateToRecord}>
+                                                {rec.Name}
+                                            </a>
+                                        </td>
+
+                                        <td>{rec.Amount}</td>
+                                        <td>{rec.Email__c}</td>
+
+                                        <td>
+                                            <lightning-button-icon
+                                                icon-name="utility:edit"
+                                                data-id={rec.Id}
+                                                onclick={handleEdit}>
+                                            </lightning-button-icon>
+
+                                            <lightning-button-icon
+                                                icon-name="utility:delete"
+                                                data-id={rec.Id}
+                                                onclick={handleDelete}>
+                                            </lightning-button-icon>
+                                        </td>
+
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+
+    <!-- MODAL -->
+    <template if:true={showModal}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header">
+                    <h2>Edit Opportunity</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-record-edit-form
+                        record-id={recordId}
+                        object-api-name="Opportunity"
+                        onsuccess={handleSuccess}>
+
+                        <lightning-input-field field-name="Name"></lightning-input-field>
+                        <lightning-input-field field-name="Amount"></lightning-input-field>
+                        <lightning-input-field field-name="StageName"></lightning-input-field>
+                        <lightning-input-field field-name="Email__c"></lightning-input-field>
+
+                        <lightning-button type="submit" label="Save"></lightning-button>
+                    </lightning-record-edit-form>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                </footer>
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

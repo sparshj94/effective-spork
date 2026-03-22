@@ -1,0 +1,153 @@
+<!-- <template>
+
+<lightning-button label="Theme" onclick={openTheme}></lightning-button>
+
+<div class="slds-grid slds-gutters">
+
+<template for:each={stages} for:item="stage">
+
+<div key={stage} class="slds-col">
+
+<div class="slds-box">
+
+<h2 class="slds-text-heading_small">{stage}</h2>
+
+<div
+data-stage={stage}
+ondrop={handleDrop}
+ondragover={allowDrop}>
+
+<template for:each="{columns[stage]}" for:item="opp">
+
+<div key={opp.Id}
+class="slds-card slds-m-vertical_small"
+draggable="true"
+data-id={opp.Id}
+ondragstart={handleDrag}>
+
+<div class="slds-card__body slds-card__body_inner">
+
+<div class="slds-grid slds-grid_align-spread">
+
+<lightning-button-icon
+icon-name="utility:edit"
+size="small"
+data-id={opp.Id}
+onclick={openDraft}>
+</lightning-button-icon>
+
+</div>
+
+<div data-id={opp.Id} onclick={openModal}>
+{opp.Name}
+</div>
+
+</div>
+
+</div>
+
+</template>
+
+</div>
+
+</div>
+
+</div>
+
+</template>
+
+</div>
+
+
+
+<template if:true={showModal}>
+
+<section role="dialog" class="slds-modal slds-fade-in-open">
+<div class="slds-modal__container">
+
+<header class="slds-modal__header">
+<h2 class="slds-text-heading_medium">Edit Opportunity</h2>
+</header>
+
+<div class="slds-modal__content slds-p-around_medium">
+
+<lightning-input
+label="Name"
+value={selected.Name}
+data-field="Name"
+onchange={handleChange}>
+</lightning-input>
+
+<lightning-input
+label="Description"
+value={selected.Description}
+data-field="Description"
+onchange={handleChange}>
+</lightning-input>
+
+</div>
+
+<footer class="slds-modal__footer">
+
+<lightning-button
+label="Save"
+variant="brand"
+onclick={save}>
+</lightning-button>
+
+</footer>
+
+</div>
+</section>
+
+<div class="slds-backdrop slds-backdrop_open"></div>
+
+</template>
+
+
+
+<template if:true={showTheme}>
+
+<section role="dialog" class="slds-modal slds-fade-in-open">
+
+<div class="slds-modal__container">
+
+<header class="slds-modal__header">
+<h2 class="slds-text-heading_medium">Theme</h2>
+</header>
+
+<div class="slds-modal__content slds-p-around_medium">
+
+<template for:each={stages} for:item="stage">
+
+<lightning-input
+key={stage}
+label={stage}
+data-stage={stage}
+placeholder="#FFFFFF"
+onchange={handleColor}>
+</lightning-input>
+
+</template>
+
+</div>
+
+<footer class="slds-modal__footer">
+
+<lightning-button
+label="Apply"
+variant="brand"
+onclick={applyTheme}>
+</lightning-button>
+
+</footer>
+
+</div>
+
+</section>
+
+<div class="slds-backdrop slds-backdrop_open"></div>
+
+</template>
+
+</template> -->

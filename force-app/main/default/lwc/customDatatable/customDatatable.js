@@ -17,4 +17,3 @@ export default class CustomDatatable extends LightningDatatable {
         }
     };
 }
-

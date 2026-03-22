@@ -1,0 +1,71 @@
+<template>
+
+    <lightning-card title="Contact Filter">
+
+        
+        <lightning-dual-listbox
+            name="fields"
+            label="Select Fields To Display"
+            source-label="Available"
+            selected-label="Selected"
+            options={fieldOptions}
+            value={selectedFields}
+            onchange={handleFieldChange}>
+        </lightning-dual-listbox>
+
+        
+        <template for:each={filters} for:item="filter" for:index="index">
+
+            <div key={filter.id} class="slds-grid slds-gutters">
+
+                <lightning-input
+                    label="Filter Value"
+                    data-index={index}
+                    onchange={handleValueChange}>
+                </lightning-input>
+
+                <lightning-combobox
+                    label="Condition"
+                    options={conditionOptions}
+                    data-index={index}
+                    onchange={handleConditionChange}>
+                </lightning-combobox>
+
+                <lightning-combobox
+                    label="Field"
+                    options={fieldOptions}
+                    data-index={index}
+                    onchange={handleFieldFilterChange}>
+                </lightning-combobox>
+
+            </div>
+
+        </template>
+
+        <lightning-button
+            label="Add More Filter"
+            onclick={addFilter}>
+        </lightning-button>
+
+        <!-- Conjunction -->
+        <lightning-combobox
+            label="Conjunction"
+            options={conjunctionOptions}
+            onchange={handleConjunction}>
+        </lightning-combobox>
+
+        <!-- Data Table -->
+        <lightning-datatable
+            key-field="Id"
+            data={data}
+            columns={columns}
+            draft-values={draftValues}
+            onsave={handleSave}
+            sorted-by="CreatedDate"
+            sorted-direction="desc"
+            onsort={handleSort}>
+        </lightning-datatable>
+
+    </lightning-card>
+
+</template>

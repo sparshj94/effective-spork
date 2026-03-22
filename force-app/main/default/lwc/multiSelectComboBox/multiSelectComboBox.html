@@ -1,0 +1,38 @@
+<template>
+    <div class="slds-combobox_container">
+        <div class={comboboxClass}>
+            
+            <!-- Input box -->
+            <div class="slds-combobox__form-element" onclick={toggleDropdown}>
+                <input 
+                    type="text" 
+                    class="slds-input" 
+                    readonly 
+                    value={selectedLabels} 
+                    placeholder="Select options"/>
+            </div>
+
+            <!-- Dropdown -->
+            <template if:true={isOpen}>
+                <p>Heelo</p>
+                <div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid">
+                    <ul class="slds-listbox slds-listbox_vertical">
+                        <template for:each={options} for:item="option">
+                            <li key={option.value} class="slds-listbox__item">
+                                <div class="slds-media slds-listbox__option">
+                                    <lightning-input 
+                                        type="checkbox"
+                                        label={option.label}
+                                        value={option.value}
+                                        onchange={handleSelect}>
+                                    </lightning-input>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+
+        </div>
+    </div>
+</template>

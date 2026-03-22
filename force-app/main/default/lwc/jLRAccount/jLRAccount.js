@@ -57,8 +57,6 @@ export default class JLRAccount extends LightningElement {
     }
     connectedCallback() {
         this.loadAccounts();
-        
-        
     }
     // @wire(getContacts, {limitSize:'$accountRowLimit', offSet:'$offSet', accountId: '$accountId'})
     // getContact({error, data}){

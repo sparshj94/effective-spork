@@ -1,0 +1,78 @@
+<template>
+
+    <template if:true={isUserFormDisplay}>
+        <div class="c-container ">
+            <lightning-layout horizontal-align="space">
+                <lightning-layout-item padding="around-small">
+                    <lightning-card  title="User save Component" class="slds-m-around_large slds-p-around_large">
+                        <lightning-input label="First name" placeholder="Enter First name" required class="firstname slds-p-around_large"></lightning-input>
+                        <lightning-input label="Last name" placeholder="Enter Last name" required class="lastname slds-p-around_large"></lightning-input>
+                        <lightning-input label="Email" placeholder="Enter Email" required class="email slds-p-around_large"></lightning-input>
+                        <lightning-button label="Save" slot="actions" onclick={handleUserSave} class="save slds-p-around_large"></lightning-button>
+                    </lightning-card>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </template>
+    
+    
+
+    <template if:true={showStartQuizButton}>
+        <div class="slds-align_absolute-center">
+            <lightning-button label="Start Quiz" slot="actions" onclick={startQuiz} class="start-quiz"></lightning-button>
+        </div>
+    </template> 
+    
+    
+
+
+    <template if:true={isToDisplayQuestions}>
+        <div class="slds-border_top">
+            
+                    <lightning-card  title="Questions" class="slds-border_bottom">
+                        <h2 class="current-active-question slds-p-around_x-small">{questionName}</h2>
+                        <lightning-radio-group
+                                    label="Select Answer"
+                                    name="quizRadioGroup"
+                                    options={options}
+                                    value={value}
+                                    onchange={handleChange}
+                                    type="radio"
+                                    class="option-for-current-question slds-m-around_x-small">
+                        </lightning-radio-group>
+                        <lightning-button label="Previous" slot="actions" onclick={handlePrevious} class="quiz-previous-button"></lightning-button>
+                        <template if:false={isHideNextButton}>
+                            <lightning-button label="Next" slot="actions" onclick={handleNext} class="quiz-next-question"></lightning-button>
+                        </template>
+                        
+                        <template if:true={isFinishButtonToDisplay}>
+                            <lightning-button label="Finish" slot="actions" onclick={handleFinish} class="finish-button"></lightning-button>
+                        </template>
+                    </lightning-card>
+              
+        </div>
+    </template>
+
+
+    <template if:true={isDisplayReviewButton}>
+        <div class= "slds-align_absolute-center">
+            <h1 class="slds-p-around_large">score of exam:{score}</h1>
+            <lightning-button label="Review Questions" slot="actions" onclick={handleReview} class="slds-p-around_large"></lightning-button>
+        </div>
+    </template>
+
+    <template if:true={questionNeedsReview}>
+        <div class= "slds-align_absolute-center">
+            <lightning-card  title="Question review" class="slds-m-around_large slds-p-around_large">
+                <h2 class="current-review-question slds-p-around_large">{reviewQuestionName}</h2>
+                <lightning-button label="Next" slot="actions" onclick={handleReviewNext} class="quiz-next-question slds-p-around_large"></lightning-button>
+                <lightning-button label="See Answer" slot="actions" onclick={seeAnswer} class="see-answers slds-p-around_large"></lightning-button>
+                <template if:true={wantToSeeAnswer}>
+                    <p class={computeClass}>User Ans: {reviewUserAns}</p>
+                    <p class="slds-p-around_large">Correct Ans: {reviewCorrectAns}</p>
+                </template>
+            </lightning-card>
+        </div>
+    </template>
+    <template if:true={disPlayThankMessage}><h1 class="slds-p-around_large slds-align_absolute-center">Thankyouuuu</h1></template>
+</template>

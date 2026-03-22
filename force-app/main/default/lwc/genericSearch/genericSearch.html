@@ -1,0 +1,54 @@
+<template>
+
+    <div>
+
+        <!-- TEXT SEARCH -->
+        <template if:true={enableTextSearch}>
+            <label>Search</label>
+            <input
+                type="text"
+                onchange={handleTextSearch}
+            />
+        </template>
+
+
+        <!-- DATE FILTER -->
+        <template if:true={enableDateFilter}>
+
+            <label>Start Date</label>
+            <input type="date" onchange={handleStartDate}>
+
+            <label>End Date</label>
+            <input type="date" onchange={handleEndDate}>
+
+        </template>
+
+
+        <!-- DYNAMIC QUERY -->
+        <template if:true={enableDynamicQuery}>
+
+            <label>Field</label>
+
+            <select onchange={handleFieldChange}>
+                <template for:each={searchFields} for:item="field">
+                    <option key={field} value={field}>{field}</option>
+                </template>
+            </select>
+
+            <label>Value</label>
+            <input type="text" onchange={handleQueryValue}>
+
+        </template>
+
+
+        <button onclick={handleSearch}>
+            Search
+        </button>
+
+        <button onclick={handleReset}>
+            Reset
+        </button>
+
+    </div>
+
+</template>

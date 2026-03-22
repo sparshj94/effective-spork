@@ -1,0 +1,73 @@
+<!-- <template>
+    <table border="1">
+        <thead>
+            <tr>
+                <template if:true={enableRowSelection}>
+                    <th>Select</th>
+                </template>
+
+                <template for:each={columns} for:item="col">
+                    <th key={col.fieldName}>{col.label}</th>
+                </template>
+            </tr>
+        </thead>
+
+        <tbody>
+            <template for:each={tableData} for:item="row">
+                <tr key={row.id} data-id={row.id} onclick={handleRowClick}>
+
+                    <template if:true={enableRowSelection}>
+                        <td>
+                            <input
+                                type="checkbox"
+                                data-id={row.id}
+                                onchange={handleRowSelect}
+                            />
+                        </td>
+                    </template>
+
+                    <template for:each={columns} for:item="col">
+                        <td key={col.fieldName}
+                            ondblclick={enableEdit}
+                            data-field={col.fieldName}
+                            data-id={row.id}
+                        >
+
+                            <template if:false={row.isEditing}>
+                                {row[col.fieldName]}
+                            </template>
+
+                            <template if:true={row.isEditing}>
+                                <input
+                                    value="{row[col.fieldName]}"
+                                    data-field={col.fieldName}
+                                    data-id={row.id}
+                                    onchange={handleChange}
+                                />
+                            </template>
+
+                        </td>
+                    </template>
+
+                </tr>
+
+                <template if:true={row.isEditing}>
+                    <tr key={row.id}>
+                        <td colspan="10">
+
+                            <button data-id={row.id} onclick={saveRow}>
+                                Save
+                            </button>
+
+                            <button data-id={row.id} onclick={cancelRow}>
+                                Cancel
+                            </button>
+
+                        </td>
+                    </tr>
+                </template>
+
+            </template>
+        </tbody>
+    </table>
+</template> -->

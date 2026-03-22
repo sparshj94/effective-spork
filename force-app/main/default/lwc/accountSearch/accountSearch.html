@@ -1,0 +1,70 @@
+<template>
+
+    <lightning-card title="Account Search">
+
+        <lightning-input
+            label="Account Name"
+            onchange={handleName}>
+        </lightning-input>
+
+        <lightning-input
+            label="Industry"
+            onchange={handleIndustry}>
+        </lightning-input>
+
+        <lightning-combobox
+            label="Rating"
+            options={ratingOptions}
+            onchange={handleRating}>
+        </lightning-combobox>
+
+        <lightning-button
+            label="Search"
+            onclick={searchAccounts}>
+        </lightning-button>
+
+    </lightning-card>
+
+
+    <template if:true={accounts}>
+
+        <lightning-card title="Accounts">
+
+            <lightning-datatable
+                key-field="Id"
+                data={accounts}
+                columns={columns}
+                onsort={handleSort}
+                sorted-by={sortedBy}
+                sorted-direction={sortedDirection}
+                onrowaction={handleRowClick}>
+            </lightning-datatable>
+
+        </lightning-card>
+
+    </template>
+
+
+    <template if:true={contacts}>
+
+        <lightning-card title="Contacts">
+
+            <lightning-datatable
+                key-field="Id"
+                data={contacts}
+                columns={contactColumns}>
+            </lightning-datatable>
+
+        </lightning-card>
+
+    </template>
+
+</template>
+
+
+
+
+<!-- <lightning-file-upload
+    record-id={selectedContactId}
+    multiple>
+</lightning-file-upload> -->

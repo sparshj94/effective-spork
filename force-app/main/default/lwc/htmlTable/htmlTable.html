@@ -1,0 +1,87 @@
+<template>
+    <div class="slds-box slds-theme_default">
+        <div class="slds-table_header-fixed_container" style="height: 400px;">
+            <div class="slds-scrollable_y" style="height: 100%;">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_header-fixed">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th scope="col" style="width: 3.25rem;">
+                                <div class="slds-truncate slds-cell-fixed" title="Select All">
+                                    <lightning-input type="checkbox" onchange={handleSelectAll}></lightning-input>
+                                </div>
+                            </th>
+                            <th scope="col"><div class="slds-truncate slds-cell-fixed">Account Name</div></th>
+                            <th scope="col"><div class="slds-truncate slds-cell-fixed">Phone</div></th>
+                            <th scope="col" style="width: 8rem;"><div class="slds-truncate slds-cell-fixed">Action</div></th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <template for:each={tableData} for:item="row">
+                            <tr key={row.Id} class="slds-hint-parent">
+                                <td>
+                                    <lightning-input type="checkbox" checked={row.isSelected} data-id={row.Id} onchange={handleRowSelection}></lightning-input>
+                                </td>
+
+                                <td ondblclick={handleDoubleClick} data-id={row.Id} data-field="Name" class="slds-cell-edit">
+                                    <span class="slds-grid slds-grid_align-spread">
+                                        <template if:false={row.isEditingName}>
+                                            <span class="slds-truncate">{row.Name}</span>
+                                        </template>
+                                        <template if:true={row.isEditingName}>
+                                            <lightning-input 
+                                                type="text" 
+                                                variant="label-hidden" 
+                                                value={row.Name} 
+                                                data-id={row.Id} 
+                                                data-field="Name" 
+                                                onchange={handleInputChange} 
+                                                onblur={handleBlur}>
+                                            </lightning-input>
+                                        </template>
+                                    </span>
+                                </td>
+
+                                <td ondblclick={handleDoubleClick} data-id={row.Id} data-field="Phone" class="slds-cell-edit">
+                                    <span class="slds-grid slds-grid_align-spread">
+                                        <template if:false={row.isEditingPhone}>
+                                            <span class="slds-truncate">{row.Phone}</span>
+                                        </template>
+                                        <template if:true={row.isEditingPhone}>
+                                            <lightning-input 
+                                                type="tel" 
+                                                variant="label-hidden" 
+                                                value={row.Phone} 
+                                                data-id={row.Id} 
+                                                data-field="Phone" 
+                                                onchange={handleInputChange} 
+                                                onblur={handleBlur}>
+                                            </lightning-input>
+                                        </template>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <lightning-button-icon 
+                                        icon-name="utility:preview" 
+                                        variant="border-filled" 
+                                        data-id={row.Id} 
+                                        onclick={handleRowAction} 
+                                        tooltip="View Details">
+                                    </lightning-button-icon>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <template if:true={hasDraftValues}>
+        <div class="slds-docked-form-footer">
+            <lightning-button label="Cancel" onclick={handleCancel} class="slds-m-right_small"></lightning-button>
+            <lightning-button label="Save" variant="brand" onclick={handleSave}></lightning-button>
+        </div>
+    </template>
+</template>
