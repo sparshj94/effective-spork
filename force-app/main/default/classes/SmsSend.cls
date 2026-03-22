@@ -3,11 +3,11 @@ public class SmsSend {
     public static void send(String name){
         String stName = 'Hello '+name;
     	HttpRequest req = new HttpRequest();
-    	req.setEndpoint('https://api.twilio.com/2010-04-01/Accounts/AC76634de2e93b431f69f1add071877c83/Messages.json');
+    	req.setEndpoint('https://api.twilio.com/2010-04-01/Accounts/axs/Messages.json');
     	req.setMethod('POST');
     
     	// Headers
-    	Blob b = Blob.valueOf('AC76634de2e93b431f69f1add071877c83:c36e682bade9a627f14ab9e92f37f86c');
+    	Blob b = Blob.valueOf('Abc');
     	String enc = EncodingUtil.base64Encode(b);
     	req.setHeader('Authorization', 'Basic '+enc);
     
